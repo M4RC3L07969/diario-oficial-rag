@@ -1,59 +1,89 @@
 # diario-oficial-rag
 
-Perguntas e respostas sobre diários oficiais: o projeto baixa as publicações, extrai as informações que estão soltas no meio do texto e permite perguntar sobre elas em linguagem natural.
+Question answering over official gazettes: the project downloads the publications, extracts the information buried in the text and lets you ask about it in plain language.
 
-> **Status:** em construção. É um projeto de aprendizado — o objetivo é ter o fluxo completo funcionando de ponta a ponta.
-
----
-
-## O problema
-
-Diário oficial é público, mas é publicado como um bloco corrido de texto, sem formatação consistente. Achar uma nomeação, um contrato ou uma decisão específica significa ler página por página na mão.
-
-Este projeto transforma esse texto bruto em algo pesquisável.
+> **Status:** work in progress. This is a learning project — the goal is to get the whole flow running end to end.
 
 ---
 
-## Como funciona
+## The problem
 
-1. **Coleta** — baixa as publicações e guarda o texto bruto
-2. **Extração** — identifica campos estruturados (datas, nomes, número do ato, categoria) com expressões regulares
-3. **Divisão e indexação** — quebra o texto em trechos menores e guarda cada um em um banco vetorial, que permite buscar por significado e não só por palavra exata
-4. **Resposta** — recupera os trechos relacionados à pergunta e entrega ao modelo de linguagem, que redige a resposta citando a publicação de origem
+Official gazettes are public, but they are published as one continuous block of text, with no consistent formatting. Finding a specific appointment, contract or decision means reading page after page by hand.
 
-As etapas 2 e 3 são o que tornam a etapa 4 confiável: o modelo responde apenas a partir do texto que foi recuperado, em vez de inventar.
+This project turns that raw text into something searchable.
 
 ---
 
-## Tecnologias
+## How it works
+
+1. **Collection** — downloads the publications and stores the raw text
+2. **Extraction** — identifies structured fields (dates, names, act number, category) using regular expressions
+3. **Splitting and indexing** — breaks the text into smaller passages and stores each one in a vector database, which allows searching by meaning and not only by exact wording
+4. **Answering** — retrieves the passages related to the question and hands them to the language model, which writes the answer citing the source publication
+
+Steps 2 and 3 are what make step 4 reliable: the model answers only from the text that was retrieved, instead of making things up.
+
+---
+
+## Technologies
 
 | | |
 | --- | --- |
-| Linguagem | Python |
+| Language | Python |
 | API | FastAPI |
-| Banco vetorial | Qdrant |
+| Vector database | Qdrant |
 | Container | Docker |
 
 ---
 
 ## Roadmap
 
-- [ ] Coleta e armazenamento do texto bruto
-- [ ] Extração de campos com regex
-- [ ] Divisão do texto e indexação no banco vetorial
-- [ ] Endpoint de busca
-- [ ] Endpoint de pergunta e resposta com citação da fonte
-- [ ] Configuração com Docker
-- [ ] Testes
+- [ ] Collection and storage of the raw text
+- [ ] Field extraction with regex
+- [ ] Text splitting and indexing in the vector database
+- [ ] Search endpoint
+- [ ] Question answering endpoint with source citation
+- [ ] Docker setup
+- [ ] Tests
 
 ---
 
-## Rodando localmente
+## Running locally
 
-As instruções entram aqui quando a primeira versão estiver funcionando de ponta a ponta.
+Instructions go here once the first version is running end to end.
 
 ---
 
-## Licença
+## Structure
+
+```
+app/
+├── main.py             FastAPI application
+├── config.py           settings read from .env
+├── api/
+│   └── v1/
+│       ├── search.py           passage search
+│       ├── questions.py        question and answer
+│       └── conversations.py    conversation history
+├── models/
+│   └── conversation.py     conversation and message tables
+├── schemas/            API input and output formats
+├── services/
+│   ├── collection.py       downloads the publications
+│   ├── extraction.py       extracts fields with regex
+│   ├── indexing.py         splits the text and indexes it in Qdrant
+│   └── answering.py        builds the answer with the LLM
+└── db/
+    ├── session.py          connection to the relational database
+    └── qdrant.py           connection to the vector database
+
+tests/
+```
+
+The files in `services` follow the steps of the process, not entities — each one is a piece of the pipeline described in "How it works".
+
+---
+
+## License
 
 MIT
