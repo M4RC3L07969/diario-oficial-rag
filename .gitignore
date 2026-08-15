@@ -221,3 +221,6 @@ qdrant_storage/
 *.sqlite3
 *.db
 data/
+
+__pycache__/
+*.pyc

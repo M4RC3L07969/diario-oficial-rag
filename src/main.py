@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 
-app = FastAPI()
+app = FastAPI(title="diario-oficial-rag", version="0.1.0")
 
 
-@app.get("/")
-def root():
-    return {"message": "API funcionando!"}
+@app.get("/health")
+def health():
+    return {"status": "ok"}
